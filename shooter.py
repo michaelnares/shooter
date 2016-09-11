@@ -51,11 +51,7 @@ class Ball(pygame.sprite.Sprite):
 		self.x = x
 		self.y = y
 		
-	def fire(self):
-		self.x = 0
-		self.x += 20
-		
-class FireBall(threading.Thread):
+	class FireBall(threading.Thread):
 
 	def __init__(self, ball):
 		pygame.threading.Thread.__init__(self)
@@ -107,8 +103,6 @@ def main():
 	target = Target(centerx, top)
 	centery = screenrect.centery
 	ball = Ball(0,centery)
-	fireball = FireBall(ball)
-	fireball.start()
 	
 	#Initialise sprites
 	
@@ -130,7 +124,8 @@ def main():
 				return
 			elif event.type == KEYDOWN:
 				if event.key == K_q
-				ball.fire()
+				fireball = FireBall(ball)
+				fireball.start()
 
 		screen.blit(background, ball.rect, ball.rect) # Giving the ball a background
 		screen.blit(background, target.rect, target.rect) # Giving the target a rect too.
