@@ -51,10 +51,20 @@ class Ball(pygame.sprite.Sprite):
 		self.x = x
 		self.y = y
 		
-	def fire(self): # TODO
+	def fire(self):
 		self.x = 0
+		self.x += 20
+		
+class FireBall(threading.Thread):
+
+	def __init__(self, ball):
+		pygame.threading.Thread.__init__(self)
+		
+	def run(self):
 		while 1:
-			self.x += 20
+			ball.x = 0
+			ball.fire()
+	
 	
 class Target(pygame.sprite.Sprite):
 	
@@ -64,7 +74,7 @@ class Target(pygame.sprite.Sprite):
 		self.y = y
 		self.image, self.rect = load_png('ball.png')
 		
-		def update(self):
+	def update(self):
 		self.y -= 10
 			if (self.y) < 0:
 				self.y = self.screenrect.top	
@@ -86,8 +96,8 @@ def main():
 	screen.blit(background, (0,0))
 	pygame.display.flip()
 	
-	game_clock = GameClock()
-	game_clock.start()
+	gameclock = GameClock()
+	gameclock.start()
 	screen = pygame.display.get_surface()
 	screenrect = screen.get_rect()
 	centerx = screenrect.centerx
@@ -97,6 +107,8 @@ def main():
 	target = Target(centerx, top)
 	centery = screenrect.centery
 	ball = Ball(0,centery)
+	fireball = FireBall(ball)
+	fireball.start()
 	
 	#Initialise sprites
 	
