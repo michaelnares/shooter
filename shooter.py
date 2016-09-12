@@ -8,37 +8,44 @@ try:
 	import pygame
 	import threading
 	from pygame.locals import *
+	from pygame.time import *
 except ImportError, err:
 	print "Couldn't load module.  .s" % (err)
 	sys.exit(2) # With error
 	
 score = 0
 
-def increment_score(sprite1, sprite2)
+def increment_score(sprite1, sprite2):
 	col = pygame.sprite.collide_rect(sprite1, sprite2)
-	if col = True:
-		score++
+	if col == True:
+		score = score + 1
 		pygame.display.set_caption("Your score is now " + str(score))	
 	
-def load_png(name)
+def load_png(name):
 	fullname = os.path.join('images', name) #I.e. loading the image from the images directory
 	try:
 		image = pygame.image.load(fullname)
 		if image.get_alpha is None:
-				image = image.convert()
+			image = image.convert()
 		else:
-				image=image.convert_alpha()
-		except pygame.error, message:
-			print "Cannot load image: ", fullname
-			raise SystemExit, message
-		return image, image.image.get_rect()
+			image=image.convert_alpha()
+	except pygame.error as message:
+		print "Cannot load image: ", fullname
+		raise SystemExit, message
+			if image == None:
+				print "image == None"
+			if image.get_rect() == None:
+				print "image.get_rect == None"
+		return image, image.get_rect()
 		
 class GameClock(threading.Thread):
 	def run(self):
-		x = 0
-	while 1:
-		x+=1
-		pygame.time.delay(1000)	# Quit when timer gets to 60
+		
+		while 1:
+			x = 0
+			pygame.time.delay(1000)
+			x = x + 1
+			# Quit when timer gets to 60
 			if (x == 60):
 				print("Game over!")
 				pygame.quit()
@@ -65,7 +72,7 @@ class Target(pygame.sprite.Sprite):
 		self.image, self.rect = load_png('ball.png')
 		
 		def update(self):
-		self.y -= 10
+			self.y -= 10
 			if (self.y) < 0:
 				self.y = self.screenrect.top	
 		
@@ -91,9 +98,9 @@ def main():
 	screen = pygame.display.get_surface()
 	screenrect = screen.get_rect()
 	centerx = screenrect.centerx
-	print "centerx = " + str(self.x)
+	print "centerx = " + str(centerx)
 	top = screenrect.top
-	print "top = " + str(self.y)
+	print "top = " + str(top)
 	target = Target(centerx, top)
 	centery = screenrect.centery
 	ball = Ball(0,centery)
@@ -114,11 +121,11 @@ def main():
 		increment_score(ball, target)
 		
 		for event in pygame.event.get():
-			if event.type = QUIT:
+			if event.type == QUIT:
 				return
 			elif event.type == KEYDOWN:
-				if event.key == K_q
-				ball.fire()
+				if event.key == K_q:
+					ball.fire()
 
 		screen.blit(background, ball.rect, ball.rect) # Giving the ball a background
 		screen.blit(background, target.rect, target.rect) # Giving the target a rect too.
